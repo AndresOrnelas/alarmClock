@@ -4,10 +4,9 @@
 
 ## Overview
 
-**AC**,  all the things you never *thought* you wanted in an alarm clock.
+**AC**,  getting you out of bed and ready for the day.
 
-> The best thing I've ever used, like ever.
- - Bill Gates
+![](http://cdn.makeagif.com/media/6-10-2014/zAe3W6.gif)
  
 ## Our Team
 1. Andres Ornelas
