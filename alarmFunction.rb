@@ -1,10 +1,18 @@
 require 'sinatra'
 require 'sinatra/reloader'
+#Scheduler
+require 'rubygems'
+require 'rufus/scheduler'
+@@scheduler = Rufus::Scheduler.new
+#end
 configure do
   enable :sessions
 end
-#functions
+#Functions
 def convert(current, alarm)
+	# This function takes the time entered by the user and
+	# the current time generated when the user clicks the button and
+	# returns the difference of both in minutes.
 	curr_arr = current.split(":")
 	alarm_arr = alarm.split(":")
 
@@ -24,6 +32,15 @@ def convert(current, alarm)
 	end
 end
 
+def ring
+	@@scheduler.in session[:time_diff].to_s + 'm' do
+  	puts "order ristretto"
+	end
+end
+
+
+
+#Sinatra routing
 get '/' do
 	session[:alarmTime]||={}
 	time_now ||= ""
@@ -33,9 +50,9 @@ end
 post '/' do
 	time_now = Time.now.strftime("%H:%M")
 	session[:alarmTime] = params[:alarmTime]
-	
-	return convert(time_now, session[:alarmTime]).to_s
-	# diff_time(time_now, session[:alarmTime])
-	# return diff_time
+	#time_diff is just the output of the 'convert' function saved
+	#in the session. 
+	session[:time_diff]=convert(time_now, session[:alarmTime])
+	ring()
 	erb :index, :locals => { :currentAlarm => session[:alarmTime], :time_now => time_now}
 end
