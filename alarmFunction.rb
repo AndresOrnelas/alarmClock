@@ -2,12 +2,14 @@ require 'sinatra'
 require 'sinatra/reloader'
 #Scheduler
 require 'rubygems'
+
 require 'rufus/scheduler'
 @@scheduler = Rufus::Scheduler.new
 #end
 configure do
   enable :sessions
 end
+
 #Functions
 def convert(current, alarm)
 	# This function takes the time entered by the user and
@@ -44,7 +46,9 @@ end
 get '/' do
 	session[:alarmTime]||={}
 	time_now ||= ""
-	erb :index, :locals => { :currentAlarm => session[:alarmTime], :time_now => time_now}
+	erb :index, :locals => { :currentAlarm => session[:alarmTime], 
+													 :time_now => time_now
+												  }
 end
 
 post '/' do
