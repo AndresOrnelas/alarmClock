@@ -34,20 +34,40 @@ def convert(current, alarm)
 	end
 end
 
-def ring
-	@@scheduler.in session[:time_diff].to_s + 'm' do
-  	puts "order ristretto"
-	end
+def ring(time_diff)
+	#@@scheduler.in session[:time_diff].to_s + 'm' do
+  @refresh = time_diff*60
 end
 
+# when refresh, =>   @autoplay = "true"
 
-
+@alarm_count = nil
 #Sinatra routing
 get '/' do
 	session[:alarmTime]||={}
 	time_now ||= ""
+	@refresh = 99999
+	
+	@autoplay = "false"
+	# if @alarm_count == nil
+	# 	@autoplay = "false"
+	# end
+
+	# if @alarm_count == 1
+	# 	@autoplay = "true"
+	# end
+
+	# if @alarm_count == 0
+	# 	@alarm_count += 1
+	# end
+
+
+
 	erb :index, :locals => { :currentAlarm => session[:alarmTime], 
-													 :time_now => time_now
+													 :time_now => time_now,
+													 :autoplay => @autoplay,
+													 :refresh => @refresh,
+													 :alarm_count => @alarm_count
 												  }
 end
 
@@ -57,6 +77,7 @@ post '/' do
 	#time_diff is just the output of the 'convert' function saved
 	#in the session. 
 	session[:time_diff]=convert(time_now, session[:alarmTime])
-	ring()
-	erb :index, :locals => { :currentAlarm => session[:alarmTime], :time_now => time_now}
+	ring(session[:time_diff])
+	@alarm_count = 0
+	erb :index, :locals => { :currentAlarm => session[:alarmTime], :time_now => time_now, :autoplay => @autoplay, :refresh => @refresh, :alarm_count => @alarm_count}
 end
