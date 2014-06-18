@@ -37,8 +37,7 @@ end
 def ring(time_diff)
   @refresh = time_diff*10 #*60
 end
-
-@delete_alarm = 'hidden = "true"'
+#Set all of the parameters for which we use conditionals to true
 @@alarm_count = nil
 @alarm_toggle = nil
 @alarm_delete = nil
@@ -46,18 +45,23 @@ end
 get '/' do
 	session[:alarmTime]||={}
 	time_now ||= ""
+	#We initialize refresh in this way so that it is there, but that
+	#it never refreshes the page unless we wanted to
 	@refresh = 999999999999999999999999
 
-	if params[:delete] == "Delete Alarm"
+	if params[:delete] == "Delete Alarm" #if users presses the Delete
+	# Alarm button, it sets the page back to resting state
 		@@alarm_count = nil
 		@alarm_delete = nil
 	end
-	# if session[:alarm_toggle = ]
-	if @@alarm_count == nil
+
+	if @@alarm_count == nil  #alarm_count is the variable that determines
+		#if the song plays or not. 
 		@autoplay = 'autoplay = "false"'
 	end
 
 	if @@alarm_count == 0
+		#Set the alarm off and turn on the alarm turn off button
 		@autoplay = 'autoplay = "true"'
 		@alarm_turn_off = '<button><a href="/">Turn off alarm</a></button>'
 		@@alarm_count = nil
@@ -80,11 +84,11 @@ post '/' do
 	#in the session. 
 	session[:time_diff]=convert(time_now, session[:alarmTime])
 	ring(session[:time_diff])
-	@autoplay = 'autoplay = "false"'
+	@autoplay = 'autoplay = "false"' #initialize the autoplay
 	@@alarm_count = 0
 	@alarm_delete = '<form method = "get" action="/">
 <input type="submit" value="Delete Alarm" name="delete">
-</form>'
+</form>' #the alarm delete only comes on after the alarm is set.
 	erb :index, :locals => { :currentAlarm => session[:alarmTime],
 													 :time_now => time_now,
 													 :autoplay => @autoplay,
