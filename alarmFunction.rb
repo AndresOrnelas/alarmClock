@@ -35,12 +35,13 @@ def convert(current, alarm)
 end
 
 def ring(time_diff)
-  @refresh = time_diff*10 #*60
+  @refresh = time_diff*5 #*60
 end
 #Set all of the parameters for which we use conditionals to true
 @@alarm_count = nil
 @alarm_toggle = nil
 @alarm_delete = nil
+@sat_question = nil
 #Sinatra routing
 get '/' do
 	session[:alarmTime]||={}
@@ -61,10 +62,21 @@ get '/' do
 	end
 
 	if @@alarm_count == 0
-		#Set the alarm off and turn on the alarm turn off button
+		#Triggers the alarm and turns on the alarm turn off button
 		@autoplay = 'autoplay = "true"'
 		@alarm_turn_off = '<button><a href="/">Turn off alarm</a></button>'
 		@@alarm_count = nil
+		@sat_question = 'Read the following SAT test question and then click on a button to select your answer.
+<br>
+Which of the following CANNOT be the lengths of the sides of a triangle?
+<form method="get" >
+<input type="radio" name="question" value="A">1,1,1<br>
+<input type="radio" name="question" value="B">1,2,4<br>
+<input type="radio" name="question" value="C">1,75,75<br>
+<input type="radio" name="question" value="D">2,3,4<br>
+<input type="radio" name="question" value="E">5,6,8<br>
+<input type="submit">
+</form>'
 	end
 
 	erb :index, :locals => { :currentAlarm => session[:alarmTime],
@@ -73,7 +85,8 @@ get '/' do
 													 :refresh => @refresh,
 													 :alarm_count => @@alarm_count,
 													 :alarm_turn_off => @alarm_turn_off,
-													 :alarm_delete => @alarm_delete
+													 :alarm_delete => @alarm_delete,
+													 :sat_question => @sat_question
 												 }
 end
 
@@ -95,6 +108,7 @@ post '/' do
 													 :refresh => @refresh,
 													 :alarm_count => @@alarm_count,
 													 :alarm_turn_off => @alarm_turn_off,
-													 :alarm_delete => @alarm_delete
+													 :alarm_delete => @alarm_delete,
+													 :sat_question => @sat_question
 												 }
 end
