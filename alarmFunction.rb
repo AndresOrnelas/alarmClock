@@ -35,25 +35,31 @@ def convert(current, alarm)
 end
 
 def ring(time_diff)
-  @refresh = time_diff*5 #*60
+  @refresh = time_diff*10 #*60
 end
 
 @delete_alarm = 'hidden = "true"'
 @@alarm_count = nil
 @alarm_toggle = nil
+@alarm_delete = nil
 #Sinatra routing
 get '/' do
 	session[:alarmTime]||={}
 	time_now ||= ""
-	@refresh = 99999
+	@refresh = 999999999999999999999999
 
+	if params[:delete] == "Delete Alarm"
+		@@alarm_count = nil
+		@alarm_delete = nil
+	end
+	# if session[:alarm_toggle = ]
 	if @@alarm_count == nil
 		@autoplay = 'autoplay = "false"'
 	end
 
-	if @@alarm_count == 1
+	if @@alarm_count == 0
 		@autoplay = 'autoplay = "true"'
-		@alarm_toggle = '<button><a href="/">Turn off alarm</a></button>'
+		@alarm_turn_off = '<button><a href="/">Turn off alarm</a></button>'
 		@@alarm_count = nil
 	end
 
@@ -62,7 +68,8 @@ get '/' do
 													 :autoplay => @autoplay,
 													 :refresh => @refresh,
 													 :alarm_count => @@alarm_count,
-													 :alarm_toggle => @alarm_toggle
+													 :alarm_turn_off => @alarm_turn_off,
+													 :alarm_delete => @alarm_delete
 												 }
 end
 
@@ -74,12 +81,16 @@ post '/' do
 	session[:time_diff]=convert(time_now, session[:alarmTime])
 	ring(session[:time_diff])
 	@autoplay = 'autoplay = "false"'
-	@@alarm_count = 1
+	@@alarm_count = 0
+	@alarm_delete = '<form method = "get" action="/">
+<input type="submit" value="Delete Alarm" name="delete">
+</form>'
 	erb :index, :locals => { :currentAlarm => session[:alarmTime],
 													 :time_now => time_now,
 													 :autoplay => @autoplay,
 													 :refresh => @refresh,
 													 :alarm_count => @@alarm_count,
-													 :alarm_toggle => @alarm_toggle
+													 :alarm_turn_off => @alarm_turn_off,
+													 :alarm_delete => @alarm_delete
 												 }
 end
