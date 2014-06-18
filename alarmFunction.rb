@@ -1,8 +1,8 @@
+require 'rubygems'
+#Sinatra
 require 'sinatra'
 require 'sinatra/reloader'
 #Scheduler
-require 'rubygems'
-
 require 'rufus/scheduler'
 @@scheduler = Rufus::Scheduler.new
 #end
@@ -35,40 +35,35 @@ def convert(current, alarm)
 end
 
 def ring(time_diff)
-	#@@scheduler.in session[:time_diff].to_s + 'm' do
-  @refresh = time_diff*60
+  @refresh = time_diff*5 #*60
 end
 
 @delete_alarm = 'hidden = "true"'
 @@alarm_count = nil
+@alarm_toggle = nil
 #Sinatra routing
 get '/' do
 	session[:alarmTime]||={}
 	time_now ||= ""
 	@refresh = 99999
-	
-	#@autoplay = 'autoplay = "false"'
+
 	if @@alarm_count == nil
 		@autoplay = 'autoplay = "false"'
 	end
 
 	if @@alarm_count == 1
 		@autoplay = 'autoplay = "true"'
+		@alarm_toggle = '<button><a href="/">Turn off alarm</a></button>'
+		@@alarm_count = nil
 	end
 
-	# if @@alarm_count == 0
-	# 	@@alarm_count += 1
-	# 	@autoplay = 'autoplay = "false"'
-	# end
-
-
-
-	erb :index, :locals => { :currentAlarm => session[:alarmTime], 
+	erb :index, :locals => { :currentAlarm => session[:alarmTime],
 													 :time_now => time_now,
 													 :autoplay => @autoplay,
 													 :refresh => @refresh,
-													 :alarm_count => @@alarm_count
-												  }
+													 :alarm_count => @@alarm_count,
+													 :alarm_toggle => @alarm_toggle
+												 }
 end
 
 post '/' do
@@ -80,6 +75,11 @@ post '/' do
 	ring(session[:time_diff])
 	@autoplay = 'autoplay = "false"'
 	@@alarm_count = 1
-	@delete_alarm = 'hidden = "false"'
-	erb :index, :locals => { :currentAlarm => session[:alarmTime], :time_now => time_now, :autoplay => @autoplay, :refresh => @refresh, :alarm_count => @@alarm_count}
+	erb :index, :locals => { :currentAlarm => session[:alarmTime],
+													 :time_now => time_now,
+													 :autoplay => @autoplay,
+													 :refresh => @refresh,
+													 :alarm_count => @@alarm_count,
+													 :alarm_toggle => @alarm_toggle
+												 }
 end
