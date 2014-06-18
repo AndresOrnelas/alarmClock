@@ -39,26 +39,26 @@ def ring(time_diff)
   @refresh = time_diff*60
 end
 
-# when refresh, =>   @autoplay = "true"
-
-@alarm_count = nil
+@delete_alarm = 'hidden = "true"'
+@@alarm_count = nil
 #Sinatra routing
 get '/' do
 	session[:alarmTime]||={}
 	time_now ||= ""
 	@refresh = 99999
 	
-	@autoplay = "false"
-	# if @alarm_count == nil
-	# 	@autoplay = "false"
-	# end
+	#@autoplay = 'autoplay = "false"'
+	if @@alarm_count == nil
+		@autoplay = 'autoplay = "false"'
+	end
 
-	# if @alarm_count == 1
-	# 	@autoplay = "true"
-	# end
+	if @@alarm_count == 1
+		@autoplay = 'autoplay = "true"'
+	end
 
-	# if @alarm_count == 0
-	# 	@alarm_count += 1
+	# if @@alarm_count == 0
+	# 	@@alarm_count += 1
+	# 	@autoplay = 'autoplay = "false"'
 	# end
 
 
@@ -67,7 +67,7 @@ get '/' do
 													 :time_now => time_now,
 													 :autoplay => @autoplay,
 													 :refresh => @refresh,
-													 :alarm_count => @alarm_count
+													 :alarm_count => @@alarm_count
 												  }
 end
 
@@ -78,6 +78,8 @@ post '/' do
 	#in the session. 
 	session[:time_diff]=convert(time_now, session[:alarmTime])
 	ring(session[:time_diff])
-	@alarm_count = 0
-	erb :index, :locals => { :currentAlarm => session[:alarmTime], :time_now => time_now, :autoplay => @autoplay, :refresh => @refresh, :alarm_count => @alarm_count}
+	@autoplay = 'autoplay = "false"'
+	@@alarm_count = 1
+	@delete_alarm = 'hidden = "false"'
+	erb :index, :locals => { :currentAlarm => session[:alarmTime], :time_now => time_now, :autoplay => @autoplay, :refresh => @refresh, :alarm_count => @@alarm_count}
 end

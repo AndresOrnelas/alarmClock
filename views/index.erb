@@ -2,7 +2,7 @@
 <html>
 <head>
 	<title>Alarm Clock</title>
-  <meta http-equiv="refresh" content="<%=refresh%>"
+  <meta http-equiv="refresh" content="<%=refresh%>">
 </head>
 <body>
   <%= alarm_count %>
@@ -12,8 +12,11 @@
   </form>	
 Alarm Time: <%= currentAlarm  %>
 Current Time: <%= time_now %>
+</br>
 
-<embed src="song.mp3" hidden="true" autoplay="<%=autoplay%>"></embed>
+<input type="hidden">
+
+<embed src="song.mp3" hidden="true" <%=autoplay%>></embed>
 
 </body>
 </html>
