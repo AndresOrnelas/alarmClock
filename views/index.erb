@@ -9,20 +9,21 @@
   <form method="post" action="/">
 	<div>Please, set the alarm time</div><input type= "time" name="alarmTime">
 	<input type="submit">
+  </br>
+  <input type="checkbox" name="sat_toggle" value="true">SAT Question of the Day
   </form>	
 Alarm Time: <%= currentAlarm  %>
 Current Time: <%= time_now %>
 </br>
 
-<embed src="song.mp3" hidden="true" <%=autoplay%>></embed>
+<embed src="song.wav" hidden="true" <%=autoplay%>></embed>
 
 <%= alarm_turn_off %>
 
 
 <%= alarm_delete %>
 
-</br>
-<%= sat_question %>
+
 
 
 </body>

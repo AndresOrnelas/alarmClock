@@ -39,9 +39,8 @@ def ring(time_diff)
 end
 #Set all of the parameters for which we use conditionals to true
 @@alarm_count = nil
-@alarm_toggle = nil
-@alarm_delete = nil
-@sat_question = nil
+@@alarm_toggle = nil
+@@alarm_delete = nil
 #Sinatra routing
 get '/' do
 	session[:alarmTime]||={}
@@ -53,7 +52,7 @@ get '/' do
 	if params[:delete] == "Delete Alarm" #if users presses the Delete
 	# Alarm button, it sets the page back to resting state
 		@@alarm_count = nil
-		@alarm_delete = nil
+		@@alarm_delete = nil
 	end
 
 	if @@alarm_count == nil  #alarm_count is the variable that determines
@@ -61,23 +60,20 @@ get '/' do
 		@autoplay = 'autoplay = "false"'
 	end
 
-	if @@alarm_count == 0
+	if session[:sat_toggle] == "true"
+		@@alarm_count = nil
+		@@alarm_delete = nil
+		redirect '/alarm'
+	else
+		if @@alarm_count == 0
 		#Triggers the alarm and turns on the alarm turn off button
 		@autoplay = 'autoplay = "true"'
 		@alarm_turn_off = '<button><a href="/">Turn off alarm</a></button>'
 		@@alarm_count = nil
-		@sat_question = 'Read the following SAT test question and then click on a button to select your answer.
-<br>
-Which of the following CANNOT be the lengths of the sides of a triangle?
-<form method="get" >
-<input type="radio" name="question" value="A">1,1,1<br>
-<input type="radio" name="question" value="B">1,2,4<br>
-<input type="radio" name="question" value="C">1,75,75<br>
-<input type="radio" name="question" value="D">2,3,4<br>
-<input type="radio" name="question" value="E">5,6,8<br>
-<input type="submit">
-</form>'
+		end
 	end
+
+	
 
 	erb :index, :locals => { :currentAlarm => session[:alarmTime],
 													 :time_now => time_now,
@@ -85,30 +81,79 @@ Which of the following CANNOT be the lengths of the sides of a triangle?
 													 :refresh => @refresh,
 													 :alarm_count => @@alarm_count,
 													 :alarm_turn_off => @alarm_turn_off,
-													 :alarm_delete => @alarm_delete,
-													 :sat_question => @sat_question
+													 :alarm_delete => @@alarm_delete,
 												 }
 end
 
 post '/' do
 	time_now = Time.now.strftime("%H:%M")
 	session[:alarmTime] = params[:alarmTime]
+	session[:sat_toggle] = params[:sat_toggle]
 	#time_diff is just the output of the 'convert' function saved
 	#in the session. 
 	session[:time_diff]=convert(time_now, session[:alarmTime])
 	ring(session[:time_diff])
 	@autoplay = 'autoplay = "false"' #initialize the autoplay
 	@@alarm_count = 0
-	@alarm_delete = '<form method = "get" action="/">
+	@@alarm_delete = '<form method = "get" action="/">
 <input type="submit" value="Delete Alarm" name="delete">
 </form>' #the alarm delete only comes on after the alarm is set.
+	
 	erb :index, :locals => { :currentAlarm => session[:alarmTime],
 													 :time_now => time_now,
 													 :autoplay => @autoplay,
 													 :refresh => @refresh,
 													 :alarm_count => @@alarm_count,
 													 :alarm_turn_off => @alarm_turn_off,
-													 :alarm_delete => @alarm_delete,
-													 :sat_question => @sat_question
+													 :alarm_delete => @@alarm_delete,
 												 }
+end
+
+
+q_array = [['Test #1 - answer is B
+Read the following SAT test question and then click on a button to select your answer.
+<br>
+Which of the following CANNOT be the lengths of the sides of a triangle?
+<form method="get" action="/alarm">
+<input type="radio" name="question" value="A">1,1,1<br>
+<input type="radio" name="question" value="B">1,2,4<br>
+<input type="radio" name="question" value="C">1,75,75<br>
+<input type="radio" name="question" value="D">2,3,4<br>
+<input type="radio" name="question" value="E">5,6,8<br>
+<input type="submit">
+</form>',"B"],
+
+
+['Test #2 - answer is C
+<br>
+Which of the following CANNOT be the lengths of the sides of a triangle?
+<form method="get" action="/alarm">
+<input type="radio" name="question" value="A">1,1,1<br>
+<input type="radio" name="question" value="B">1,2,4<br>
+<input type="radio" name="question" value="C">1,75,75<br>
+<input type="radio" name="question" value="D">2,3,4<br>
+<input type="radio" name="question" value="E">5,6,8<br>
+<input type="submit">
+</form>', "C"]]
+
+@@question_counter = 0
+get '/alarm' do
+  # session[:answer] = "blah"
+  if @@question_counter == 0
+    session[:num] = rand(0..1)
+    @question = q_array[session[:num]][0]
+    @answer = q_array[session[:num]][1]
+    session[:question] = @question
+    session[:answer] = @answer
+    @@question_counter = 1
+  end
+  if params[:question] == session[:answer]
+      session[:sat_toggle] = nil
+      @@question_counter = 0
+      redirect '/'
+  end
+  erb :alarm, :locals => {:question => session[:question],
+                          :answer => session[:answer],
+                          :question_counter => @@question_counter
+                         }
 end
