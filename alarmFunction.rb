@@ -36,8 +36,14 @@ def convert(current, alarm)
 		time = diff + (1440) # 24 hours * 60 minutes
 	end
 
-	if weather(time) > 0.5
-		return time - 15
+	if session[:weather_toggle] == "true"
+		if weather(time) > 0.5
+			return time - 15
+		else
+			return time
+		end
+	else
+		return time
 	end
 
 end
@@ -58,6 +64,7 @@ end
 @@alarm_delete = nil
 #Sinatra routing
 get '/' do
+	return weather
 	session[:alarmTime]||={}
 	time_now ||= ""
 	#We initialize refresh in this way so that it is there, but that
@@ -105,6 +112,7 @@ post '/' do
 	time_now = Time.now.strftime("%H:%M")
 	session[:alarmTime] = params[:alarmTime]
 	session[:sat_toggle] = params[:sat_toggle]
+	session[:weather_toggle] = params[:weather_toggle]
 	#time_diff is just the output of the 'convert' function saved
 	#in the session. 
 	session[:time_diff]=convert(time_now, session[:alarmTime])
