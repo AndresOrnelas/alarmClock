@@ -2,10 +2,13 @@ require 'rubygems'
 #Sinatra
 require 'sinatra'
 require 'sinatra/reloader'
+#Weather
+require 'forecast_io'
+
 #Scheduler
-require 'rufus/scheduler'
-@@scheduler = Rufus::Scheduler.new
-#end
+# require 'rufus/scheduler'
+# @@scheduler = Rufus::Scheduler.new
+# #end
 configure do
   enable :sessions
 end
@@ -28,10 +31,22 @@ def convert(current, alarm)
 
 	diff = alarm_time_min - curr_time_min
 	if diff > 0
-		return diff
+		time = diff
 	else
-		return diff + (1440) # 24*60
+		time = diff + (1440) # 24 hours * 60 minutes
 	end
+
+	if weather(time) > 0.5
+		return time - 15
+	end
+
+end
+
+def weather(time_diff)
+	ForecastIO.api_key = 'b6e2ffc9d69a08d04659a92599cc7ea8'
+	forecast = ForecastIO.forecast(41.3111, -72.9241, time: (Time.now + (time_diff*60)).to_i) # params are: latitude, longitude
+	#puts forecast.currently # gives you the current forecast datapoint
+	return forecast.currently.precipProbability # =>"Mostly Cloudy"
 end
 
 def ring(time_diff)
@@ -70,6 +85,7 @@ get '/' do
 		@autoplay = 'autoplay = "true"'
 		@alarm_turn_off = '<button><a href="/">Turn off alarm</a></button>'
 		@@alarm_count = nil
+		@@alarm_delete = nil
 		end
 	end
 
@@ -98,8 +114,8 @@ post '/' do
 	@@alarm_delete = '<form method = "get" action="/">
 <input type="submit" value="Delete Alarm" name="delete">
 </form>' #the alarm delete only comes on after the alarm is set.
-	
-	erb :index, :locals => { :currentAlarm => session[:alarmTime],
+
+	erb :index, :locals => { :currentAlarm => params[:alarmTime],
 													 :time_now => time_now,
 													 :autoplay => @autoplay,
 													 :refresh => @refresh,
@@ -124,17 +140,33 @@ Which of the following CANNOT be the lengths of the sides of a triangle?
 </form>',"B"],
 
 
-['Test #2 - answer is C
+['Choose the word or set of words that, when inserted in the sentence, best fits the meaning of the sentence as a whole. 
 <br>
-Which of the following CANNOT be the lengths of the sides of a triangle?
+While a “rock” is usually defined as ------- , or a combination, of one or more minerals, geologists often ------- the 
+<br> definition to include such materials as clay, loose sand, and certain limestones.
 <form method="get" action="/alarm">
-<input type="radio" name="question" value="A">1,1,1<br>
-<input type="radio" name="question" value="B">1,2,4<br>
-<input type="radio" name="question" value="C">1,75,75<br>
-<input type="radio" name="question" value="D">2,3,4<br>
-<input type="radio" name="question" value="E">5,6,8<br>
+<input type="radio" name="question" value="A">a conglomeration . . limit<br>
+<input type="radio" name="question" value="B">an aggregate . . extend<br>
+<input type="radio" name="question" value="C">an element . . eliminate<br>
+<input type="radio" name="question" value="D">a blend . . restrict<br>
+<input type="radio" name="question" value="E">a product . . provide<br>
 <input type="submit">
-</form>', "C"]]
+</form>', "B"],
+
+['Choose the word or set of words that, when inserted in the sentence, best fits the meaning of the sentence as a whole. 
+<br>
+Those scholars who believe that the true author of the poem died in 1812 consider the authenticity of this particular manuscript ------- because 
+<br>it includes references to events that occurred in 1818.
+<form method="get" action="/alarm">
+<input type="radio" name="question" value="A">ageless<br>
+<input type="radio" name="question" value="B">tenable<br>
+<input type="radio" name="question" value="C">suspect<br>
+<input type="radio" name="question" value="D">unique<br>
+<input type="radio" name="question" value="E">legitimate<br>
+<input type="submit">
+</form>', "C"]
+
+]
 
 @@question_counter = 0
 get '/alarm' do
