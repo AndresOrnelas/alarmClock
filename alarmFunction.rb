@@ -64,7 +64,6 @@ end
 @@alarm_delete = nil
 #Sinatra routing
 get '/' do
-	return weather
 	session[:alarmTime]||={}
 	time_now ||= ""
 	#We initialize refresh in this way so that it is there, but that
@@ -134,7 +133,9 @@ post '/' do
 end
 
 
-q_array = [['Test #1 - answer is B
+q_array = [
+
+['Test #1 - answer is B
 Read the following SAT test question and then click on a button to select your answer.
 <br>
 Which of the following CANNOT be the lengths of the sides of a triangle?

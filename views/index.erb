@@ -3,8 +3,14 @@
 <head>
 	<title>Alarm Clock</title>
   <meta http-equiv="refresh" content="<%=refresh%>">
+  <script src="script.js"></script>
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <link href='http://fonts.googleapis.com/css?family=Josefin+Sans|Coda' rel='stylesheet' type='text/css'>
 </head>
-<body>
+<body onload="startTime()">
+
+<div id="txt"></div>
+</br>
   <%= alarm_count %>
   <form method="post" action="/">
 	<div>Please, set the alarm time</div><input type= "time" name="alarmTime">
