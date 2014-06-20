@@ -11,7 +11,6 @@
 
 <div id="txt"></div>
 </br>
-  <%= alarm_count %>
   <form method="post" action="/">
 	<div>Please, set the alarm time</div><input type= "time" name="alarmTime">
 	<input type="submit">
@@ -20,10 +19,9 @@
   <input type="checkbox" name="weather_toggle" value="true">Wake me up 15 minutes early if it's going to rain
   </form>	
 Alarm Time: <%= currentAlarm  %>
-Current Time: <%= time_now %>
 </br>
 
-<embed src="song.wav" hidden="true" <%=autoplay%>></embed>
+<embed <%=song%> hidden="true" <%=autoplay%>></embed>
 
 <%= alarm_turn_off %>
 

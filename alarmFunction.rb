@@ -38,11 +38,14 @@ def convert(current, alarm)
 
 	if session[:weather_toggle] == "true"
 		if weather(time) > 0.5
+			session[:diff] = time
 			return time - 15
 		else
+			session[:diff] = time
 			return time
 		end
 	else
+		session[:diff] = time
 		return time
 	end
 
@@ -50,14 +53,34 @@ end
 
 def weather(time_diff)
 	ForecastIO.api_key = 'b6e2ffc9d69a08d04659a92599cc7ea8'
-	forecast = ForecastIO.forecast(41.3111, -72.9241, time: (Time.now + (time_diff*60)).to_i) # params are: latitude, longitude
+	session[:forecast] = ForecastIO.forecast(41.3111, -72.9241, time: (Time.now + (time_diff*60)).to_i) # params are: latitude, longitude
 	#puts forecast.currently # gives you the current forecast datapoint
-	return forecast.currently.precipProbability # =>"Mostly Cloudy"
+	return session[:forecast].currently.precipProbability # =>"Mostly Cloudy"
 end
 
 def ring(time_diff)
   @refresh = time_diff*5 #*60
 end
+
+def select_song()
+	ForecastIO.api_key = 'b6e2ffc9d69a08d04659a92599cc7ea8'
+	session[:forecast] = ForecastIO.forecast(41.3111, -72.9241, time: (Time.now + (session[:diff]*60)).to_i)
+
+	if session[:forecast].currently.temperature > 70 && session[:forecast].currently.cloudCover < 0.5
+		return 'src="sunny.m4a"'
+	elsif session[:forecast].currently.cloudCover > 0.5
+		return 'src="cloudy.m4a"'
+	elsif session[:forecast].currently.precipProbability > 0.5 && session[:forecast].currently.temperature < 32
+		return 'src="snowy.m4a"'
+	elsif session[:forecast].currently.precipProbability > 0.5
+		return 'src="rainy.m4a"'
+	else
+		return 'src="default.wav"'
+	end
+end
+
+#'src="song.wav"'
+
 #Set all of the parameters for which we use conditionals to true
 @@alarm_count = nil
 @@alarm_toggle = nil
@@ -92,6 +115,8 @@ get '/' do
 		@alarm_turn_off = '<button><a href="/">Turn off alarm</a></button>'
 		@@alarm_count = nil
 		@@alarm_delete = nil
+		@song = select_song()
+		
 		end
 	end
 
@@ -104,6 +129,7 @@ get '/' do
 													 :alarm_count => @@alarm_count,
 													 :alarm_turn_off => @alarm_turn_off,
 													 :alarm_delete => @@alarm_delete,
+													 :song => @song
 												 }
 end
 
@@ -129,6 +155,7 @@ post '/' do
 													 :alarm_count => @@alarm_count,
 													 :alarm_turn_off => @alarm_turn_off,
 													 :alarm_delete => @@alarm_delete,
+													 :song => @song
 												 }
 end
 
@@ -179,7 +206,6 @@ Those scholars who believe that the true author of the poem died in 1812 conside
 
 @@question_counter = 0
 get '/alarm' do
-  # session[:answer] = "blah"
   if @@question_counter == 0
     session[:num] = rand(0..1)
     @question = q_array[session[:num]][0]
@@ -193,8 +219,10 @@ get '/alarm' do
       @@question_counter = 0
       redirect '/'
   end
+  @song = select_song()
   erb :alarm, :locals => {:question => session[:question],
                           :answer => session[:answer],
-                          :question_counter => @@question_counter
+                          :question_counter => @@question_counter,
+                          :song => @song
                          }
 end
