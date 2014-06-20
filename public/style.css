@@ -1,7 +1,31 @@
+@font-face {
+   font-family: 'digital-7';
+   src: url('http://denisx.ru/fonts/digital-webfont.ttf') format('truetype');
+   font-weight: normal;
+   font-style: normal;
+}
+
+html { 
+  background: url(sunset.jpg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+#circle {
+  width: 600px;
+  height: 600px;
+}
+
 #txt {
-  font-size: 200px;
-  font-family: 'Londrina Shadow', cursive;
-  text-align: center;
+ font-family: 'digital-7';
+ font-size: 150px;
+ text-align: center;
+ color: black;
+}
+
+#will_disappear {
 }
 
 
