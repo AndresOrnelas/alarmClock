@@ -10,11 +10,17 @@
 <body onload="startTime()">
 
 <div id="txt"></div>
+<div id="circle">
+  <img src="circle.png" width="600px" height="600px">
+</div>
 </br>
+
 <div id="forecast_name">
 <%= forecast_name %>
 </div>
+
 </br>
+
 <div <%= hidden %>>
   <form method="post" action="/">
 	<div>Please, set the alarm time</div><input type= "time" name="alarmTime">
