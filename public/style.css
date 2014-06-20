@@ -1,3 +1,15 @@
+@font-face {
+  font-family: Clock;
+  src: url(clock.ttf);
+}       
+ 
+#forecast_name {
+  background: #333333;
+  font-family: Clock;
+  font-size: 24pt;
+  color: #ffffff;
+}
+
 #txt {
   font-size: 200px;
   font-family: 'Londrina Shadow', cursive;

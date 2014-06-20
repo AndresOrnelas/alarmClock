@@ -11,12 +11,20 @@
 
 <div id="txt"></div>
 </br>
+<div id="forecast_name">
+<%= forecast_name %>
+</div>
+</br>
+<div <%= hidden %>>
   <form method="post" action="/">
 	<div>Please, set the alarm time</div><input type= "time" name="alarmTime">
 	<input type="submit">
   </br>
-  <input type="checkbox" name="sat_toggle" value="true">SAT Question of the Day
-  <input type="checkbox" name="weather_toggle" value="true">Wake me up 15 minutes early if it's going to rain
+
+  <input type="checkbox" name="sat_toggle" value="true" >SAT Question of the Day
+
+  <input type="checkbox" name="weather_toggle" value="true" >Wake me up 15 minutes early if it's going to rain
+</div>
   </form>	
 Alarm Time: <%= currentAlarm  %>
 </br>

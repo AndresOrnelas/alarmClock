@@ -67,14 +67,19 @@ def select_song()
 	session[:forecast] = ForecastIO.forecast(41.3111, -72.9241, time: (Time.now + (session[:diff]*60)).to_i)
 
 	if session[:forecast].currently.temperature > 70 && session[:forecast].currently.cloudCover < 0.5
+		session[:forecast_name] = "It's a bright and sunshiny day. Get up and go outside!"
 		return 'src="sunny.m4a"'
-	elsif session[:forecast].currently.cloudCover > 0.5
+	elsif session[:forecast].currently.cloudCover > 0.7
+		session[:forecast_name] = "Don't pout because it's a cloudy day, make it yours!"
 		return 'src="cloudy.m4a"'
 	elsif session[:forecast].currently.precipProbability > 0.5 && session[:forecast].currently.temperature < 32
+		session[:forecast_name] = "Is it snowing? We think it is! Go check outside!"
 		return 'src="snowy.m4a"'
 	elsif session[:forecast].currently.precipProbability > 0.5
+		session[:forecast_name] = "We woke you up 15 minutes early because it's a rainy day. Don't forget your umbrella today!"
 		return 'src="rainy.m4a"'
 	else
+		session[:forecast_name] = "It's a pretty normal day. Make it special!"
 		return 'src="default.wav"'
 	end
 end
@@ -102,6 +107,7 @@ get '/' do
 	if @@alarm_count == nil  #alarm_count is the variable that determines
 		#if the song plays or not. 
 		@autoplay = 'autoplay = "false"'
+		@hidden = nil
 	end
 
 	if session[:sat_toggle] == "true"
@@ -116,6 +122,8 @@ get '/' do
 		@@alarm_count = nil
 		@@alarm_delete = nil
 		@song = select_song()
+		@hidden = 'hidden'
+		@forecast_name = session[:forecast_name]
 		
 		end
 	end
@@ -129,7 +137,9 @@ get '/' do
 													 :alarm_count => @@alarm_count,
 													 :alarm_turn_off => @alarm_turn_off,
 													 :alarm_delete => @@alarm_delete,
-													 :song => @song
+													 :song => @song,
+													 :hidden => @hidden,
+													 :forecast_name => @forecast_name
 												 }
 end
 
@@ -138,6 +148,7 @@ post '/' do
 	session[:alarmTime] = params[:alarmTime]
 	session[:sat_toggle] = params[:sat_toggle]
 	session[:weather_toggle] = params[:weather_toggle]
+	@hidden = 'hidden'
 	#time_diff is just the output of the 'convert' function saved
 	#in the session. 
 	session[:time_diff]=convert(time_now, session[:alarmTime])
@@ -155,7 +166,9 @@ post '/' do
 													 :alarm_count => @@alarm_count,
 													 :alarm_turn_off => @alarm_turn_off,
 													 :alarm_delete => @@alarm_delete,
-													 :song => @song
+													 :song => @song,
+													 :hidden => @hidden,
+													 :forecast_name => @forecast_name
 												 }
 end
 
