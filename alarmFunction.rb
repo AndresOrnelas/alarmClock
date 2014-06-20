@@ -176,18 +176,18 @@ Which of the following CANNOT be the lengths of the sides of a triangle?
 </form>',"B"],
 
 
-['Choose the word or set of words that, when inserted in the sentence, best fits the meaning of the sentence as a whole. 
-<br>
-While a “rock” is usually defined as ------- , or a combination, of one or more minerals, geologists often ------- the 
-<br> definition to include such materials as clay, loose sand, and certain limestones.
-<form method="get" action="/alarm">
-<input type="radio" name="question" value="A">a conglomeration . . limit<br>
-<input type="radio" name="question" value="B">an aggregate . . extend<br>
-<input type="radio" name="question" value="C">an element . . eliminate<br>
-<input type="radio" name="question" value="D">a blend . . restrict<br>
-<input type="radio" name="question" value="E">a product . . provide<br>
-<input type="submit">
-</form>', "B"],
+# ['Choose the word or set of words that, when inserted in the sentence, best fits the meaning of the sentence as a whole. 
+# <br>
+# While a “rock” is usually defined as ------- , or a combination, of one or more minerals, geologists often ------- the 
+# <br> definition to include such materials as clay, loose sand, and certain limestones.
+# <form method="get" action="/alarm">
+# <input type="radio" name="question" value="A">a conglomeration . . limit<br>
+# <input type="radio" name="question" value="B">an aggregate . . extend<br>
+# <input type="radio" name="question" value="C">an element . . eliminate<br>
+# <input type="radio" name="question" value="D">a blend . . restrict<br>
+# <input type="radio" name="question" value="E">a product . . provide<br>
+# <input type="submit">
+# </form>', "B"],
 
 ['Choose the word or set of words that, when inserted in the sentence, best fits the meaning of the sentence as a whole. 
 <br>
