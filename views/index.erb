@@ -16,6 +16,7 @@
  <div id="txt"></div>
 </br>
 
+<div id="masterdiv">
 <div id="forecast_name">
 <%= forecast_name %>
 </div>
@@ -28,23 +29,23 @@
 	<input class="submit" type="submit">
   </br>
   <br>
-
+  <div id="options">
   <input type="checkbox" name="sat_toggle" value="true">Make me answer the SAT Question of the Day
-
   <br>
   <input type="checkbox" name="weather_toggle" value="true" >Wake me up 15 minutes early if it's going to rain
+  </div>
 </div>
   </form>	
 <br>
 <br>
 <div id="alarm_time">Alarm Time: <%= currentAlarm  %></div>
 </br>
-
 <embed <%=song%> hidden="true" <%=autoplay%>></embed>
 
 <%= alarm_turn_off %>
 
 <%= alarm_delete %>
+</div>
 
 </body>
 </html>

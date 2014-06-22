@@ -1,10 +1,3 @@
-@font-face {
-   font-family: 'digital-7';
-   src: url('http://denisx.ru/fonts/digital-webfont.ttf') format('truetype');
-   font-weight: normal;
-   font-style: normal;
-}
-
 html { 
   background: url(sunset.jpg) no-repeat center center fixed; 
   -webkit-background-size: cover;
@@ -13,12 +6,7 @@ html {
   background-size: cover;
 }
 
-.clock {
-  font-size: 150px;
-}
-
-
-
+/*Clock*/
 #circle {
   position: fixed;
   right: 50px; 
@@ -39,19 +27,26 @@ html {
   opacity: 0.9;
 }
 
+
 #hidden {
-  font-family: 'Josefin Sans', sans-serif;
-  font-size: 20px;
+  font-family: 'Poiret One', cursive;
+  font-size: 40px;
+
   color: white;
   opacity: 0.9;
-  text-shadow: -1px 0 #3A3A38, 0 1px #3A3A38, 1px 0 #3A3A38, 0 -1px #3A3A38;
 }
 
 #alarm_time {
   font-family: 'Poiret One', cursive;
-  font-size: 45px;
+  font-size: 40px;
   color: white;
   opacity: 0.9;
+ border:solid 2px #ffffff;
+  -moz-border-radius: 62px;
+  -webkit-border-radius: 62px;
+  border-radius: 62px;
+  padding: 5px;
+
 }
 
 .submit {
@@ -64,7 +59,7 @@ html {
 }
 
 #input_time {
-  font-family: 'Josefin Sans', sans-serif;
+  font-family: 'Poiret One', cursive;
   font-size: 20px;
   border-radius: 10px;
 }
@@ -76,5 +71,28 @@ html {
   opacity: 0.9;
 }
 
+#masterdiv{
+  display: inline-block;
+  text-align: center;
+  position: fixed;
+  left: 90px;
+  top: 140px;
+  padding: 15px;
+  opacity: .3;
+  border:double 6px #ffffff;
+  -moz-border-radius: 62px;
+  -webkit-border-radius: 62px;
+  border-radius: 62px;
 
+}
+#masterdiv:hover{
+  opacity: 0.9;
+  transition-duration: 1s;
+  background-color: blue;
+
+}
+
+#options{
+  font-size: 20px;  
+}
 
