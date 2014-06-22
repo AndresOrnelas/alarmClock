@@ -92,7 +92,7 @@ end
 @@alarm_delete = nil
 #Sinatra routing
 get '/' do
-	session[:alarmTime]||={}
+	session[:alarmTime]||=Hash.new
 	time_now ||= ""
 	#We initialize refresh in this way so that it is there, but that
 	#it never refreshes the page unless we wanted to
@@ -118,7 +118,7 @@ get '/' do
 		if @@alarm_count == 0
 		#Triggers the alarm and turns on the alarm turn off button
 		@autoplay = 'autoplay = "true"'
-		@alarm_turn_off = '<button><a href="/">Turn off alarm</a></button>'
+		@alarm_turn_off = '<button class="submit"><a href="/">Turn off alarm</a></button>'
 		@@alarm_count = nil
 		@@alarm_delete = nil
 		@song = select_song()
@@ -156,7 +156,7 @@ post '/' do
 	@autoplay = 'autoplay = "false"' #initialize the autoplay
 	@@alarm_count = 0
 	@@alarm_delete = '<form method = "get" action="/">
-<input type="submit" value="Delete Alarm" name="delete">
+<input class="submit" type="submit" value="Delete Alarm" name="delete">
 </form>' #the alarm delete only comes on after the alarm is set.
 
 	erb :index, :locals => { :currentAlarm => params[:alarmTime],
@@ -175,9 +175,8 @@ end
 
 q_array = [
 
-['Test #1 - answer is B
-Read the following SAT test question and then click on a button to select your answer.
-<br>
+[' 1 Read the following SAT test question and then click on a button to select your answer.
+<br><br>
 Which of the following CANNOT be the lengths of the sides of a triangle?
 <form method="get" action="/alarm">
 <input type="radio" name="question" value="A">1,1,1<br>
@@ -185,35 +184,33 @@ Which of the following CANNOT be the lengths of the sides of a triangle?
 <input type="radio" name="question" value="C">1,75,75<br>
 <input type="radio" name="question" value="D">2,3,4<br>
 <input type="radio" name="question" value="E">5,6,8<br>
-<input type="submit">
+<input class = "submit" type="submit">
 </form>',"B"],
 
+[' 2 Read the following SAT test question and then click on a button to select your answer.
+<br><br>
+Which of the following CANNOT be the lengths of the sides of a triangle?
+<form method="get" action="/alarm">
+<input type="radio" name="question" value="A">1,1,1<br>
+<input type="radio" name="question" value="B">1,2,4<br>
+<input type="radio" name="question" value="C">1,75,75<br>
+<input type="radio" name="question" value="D">2,3,4<br>
+<input type="radio" name="question" value="E">5,6,8<br>
+<input class = "submit" type="submit">
+</form>',"B"]
 
 # ['Choose the word or set of words that, when inserted in the sentence, best fits the meaning of the sentence as a whole. 
-# <br>
-# While a “rock” is usually defined as ------- , or a combination, of one or more minerals, geologists often ------- the 
-# <br> definition to include such materials as clay, loose sand, and certain limestones.
+# <br><br>
+# Those scholars who believe that the true author of the poem died in 1812 consider the authenticity of this particular manuscript ------- because 
+# <br>it includes references to events that occurred in 1818.
 # <form method="get" action="/alarm">
-# <input type="radio" name="question" value="A">a conglomeration . . limit<br>
-# <input type="radio" name="question" value="B">an aggregate . . extend<br>
-# <input type="radio" name="question" value="C">an element . . eliminate<br>
-# <input type="radio" name="question" value="D">a blend . . restrict<br>
-# <input type="radio" name="question" value="E">a product . . provide<br>
-# <input type="submit">
-# </form>', "B"],
-
-['Choose the word or set of words that, when inserted in the sentence, best fits the meaning of the sentence as a whole. 
-<br>
-Those scholars who believe that the true author of the poem died in 1812 consider the authenticity of this particular manuscript ------- because 
-<br>it includes references to events that occurred in 1818.
-<form method="get" action="/alarm">
-<input type="radio" name="question" value="A">ageless<br>
-<input type="radio" name="question" value="B">tenable<br>
-<input type="radio" name="question" value="C">suspect<br>
-<input type="radio" name="question" value="D">unique<br>
-<input type="radio" name="question" value="E">legitimate<br>
-<input type="submit">
-</form>', "C"]
+# <input type="radio" name="question" value="A">ageless<br>
+# <input type="radio" name="question" value="B">tenable<br>
+# <input type="radio" name="question" value="C">suspect<br>
+# <input type="radio" name="question" value="D">unique<br>
+# <input type="radio" name="question" value="E">legitimate<br>
+# <input class = "submit" type="submit">
+# </form>', "C"]
 
 ]
 
@@ -232,7 +229,9 @@ get '/alarm' do
       @@question_counter = 0
       redirect '/'
   end
+
   @song = select_song()
+  
   erb :alarm, :locals => {:question => session[:question],
                           :answer => session[:answer],
                           :question_counter => @@question_counter,

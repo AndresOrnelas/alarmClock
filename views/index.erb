@@ -7,12 +7,13 @@
   <link rel="stylesheet" type="text/css" href="style.css">
   <link href='http://fonts.googleapis.com/css?family=Poiret+One|Josefin+Sans' rel='stylesheet' type='text/css'>
 </head>
+
 <body onload="startTime()">
+
 
 
   <img id="circle" src="circle1.png" width="600px" height="600px">
  <div id="txt"></div>
-
 </br>
 
 <div id="forecast_name">
@@ -21,29 +22,29 @@
 
 </br>
 
-<div <%= hidden %>>
+<div <%= hidden %> id="hidden">
   <form method="post" action="/">
-	<div>Please, set the alarm time</div><input type= "time" name="alarmTime">
-	<input type="submit">
+	<div>Please, set the alarm time</div><input id="input_time" type= "time" name="alarmTime">
+	<input class="submit" type="submit">
   </br>
+  <br>
 
-  <input type="checkbox" name="sat_toggle" value="true" >SAT Question of the Day
+  <input type="checkbox" name="sat_toggle" value="true">Make me answer the SAT Question of the Day
 
+  <br>
   <input type="checkbox" name="weather_toggle" value="true" >Wake me up 15 minutes early if it's going to rain
 </div>
   </form>	
-Alarm Time: <%= currentAlarm  %>
+<br>
+<br>
+<div id="alarm_time">Alarm Time: <%= currentAlarm  %></div>
 </br>
 
 <embed <%=song%> hidden="true" <%=autoplay%>></embed>
 
 <%= alarm_turn_off %>
 
-
 <%= alarm_delete %>
-
-
-
 
 </body>
 </html>
