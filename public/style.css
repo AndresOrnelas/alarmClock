@@ -78,11 +78,13 @@ html {
   left: 90px;
   top: 140px;
   padding: 15px;
-  opacity: .3;
+  opacity: .7;
   border:double 6px #ffffff;
   -moz-border-radius: 62px;
   -webkit-border-radius: 62px;
   border-radius: 62px;
+  transition-duration: 1s;
+  max-width: 40%;
 
 }
 #masterdiv:hover{
