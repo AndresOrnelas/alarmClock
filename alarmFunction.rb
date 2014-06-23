@@ -80,7 +80,7 @@ def select_song()
 		return 'src="rainy.m4a"'
 	else
 		session[:forecast_name] = "It's a pretty normal day. Make it special!"
-		return 'src="default.wav"'
+		return 'src="https://dl-web.dropbox.com/get/Musi/default.WAV?_subject_uid=11026799&w=AAATTss2cV4A-ZM_W5-P3J-TpdrnZ3DbXziXHSAeDHloMQ"'
 	end
 end
 
