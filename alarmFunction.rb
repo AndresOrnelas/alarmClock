@@ -59,7 +59,7 @@ def weather(time_diff)
 end
 
 def ring(time_diff)
-  @refresh = time_diff*10 #*5 #*60
+  @refresh = (time_diff*5)/1201 #*5 #*60
 end
 
 def select_song()
