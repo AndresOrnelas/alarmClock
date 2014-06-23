@@ -175,7 +175,7 @@ end
 
 q_array = [
 
-[' 1 Read the following SAT test question and then click on a button to select your answer.
+[' Read the following SAT test question and then click on a button to select your answer.
 <br><br>
 Which of the following CANNOT be the lengths of the sides of a triangle?
 <form method="get" action="/alarm">
@@ -187,7 +187,7 @@ Which of the following CANNOT be the lengths of the sides of a triangle?
 <input class = "submit" type="submit">
 </form>',"B"],
 
-[' 2 Read the following SAT test question and then click on a button to select your answer.
+[' Read the following SAT test question and then click on a button to select your answer.
 <br><br>
 Which of the following CANNOT be the lengths of the sides of a triangle?
 <form method="get" action="/alarm">
