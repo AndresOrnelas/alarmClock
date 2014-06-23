@@ -68,7 +68,7 @@ def select_song()
 
 	if session[:forecast].currently.temperature > 70 && session[:forecast].currently.cloudCover < 0.5
 		session[:forecast_name] = "It's a bright and sunshiny day. Get up and go outside!"
-		return 'src="sunny.m4a"'
+		return 'src="https://dl-web.dropbox.com/get/Musi/sunny.m4a?_subject_uid=11026799&w=AACU5zzuIt4OACKtJke_uDzSocWw51tHbsBlzW6FxUDUOQ"'
 	elsif session[:forecast].currently.cloudCover > 0.7
 		session[:forecast_name] = "Don't pout because it's a cloudy day, make it yours!"
 		return 'src="cloudy.m4a"'
